@@ -1,0 +1,29 @@
+# Xcode
+DerivedData/
+*.xcuserdata
+*.xcuserdata/
+*.xcuserstate
+*.xcworkspace/xcuserdata
+
+# macOS
+.DS_Store
+*.app
+*.dSYM.zip
+*.dSYM
+
+# IDE
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary scripts
+gen_*.swift
+gen_*.py
+
+# Python venv
+.venv/
+
+# reasonix
+.reasonix/
+.reasonix/*
