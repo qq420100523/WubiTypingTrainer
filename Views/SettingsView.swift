@@ -1,6 +1,7 @@
 import SwiftUI
 
 /// 设置视图
+@MainActor
 struct SettingsView: View {
     @Bindable var viewModel: PracticeViewModel
     @State private var cumulativeStats = CumulativeStats.shared

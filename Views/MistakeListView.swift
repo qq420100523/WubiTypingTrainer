@@ -1,6 +1,7 @@
 import SwiftUI
 
 /// 错字本视图
+@MainActor
 struct MistakeListView: View {
     @State private var mistakeTracker = MistakeTracker.shared
     @State private var showClearConfirmation = false

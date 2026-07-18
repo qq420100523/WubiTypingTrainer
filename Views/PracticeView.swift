@@ -1,6 +1,7 @@
 import SwiftUI
 
 /// 练习主视图 — 根据模式切换单字视图或文章视图
+@MainActor
 struct PracticeView: View {
     @Bindable var viewModel: PracticeViewModel
     @FocusState private var inputFocused: Bool

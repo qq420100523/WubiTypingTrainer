@@ -1,6 +1,7 @@
 import SwiftUI
 
 /// 文章选择视图
+@MainActor
 struct ArticleListView: View {
     @Bindable var viewModel: PracticeViewModel
     @Environment(\.dismiss) private var dismiss

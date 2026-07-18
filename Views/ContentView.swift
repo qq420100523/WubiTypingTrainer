@@ -1,6 +1,7 @@
 import SwiftUI
 
 /// 主视图 — 侧边栏导航
+@MainActor
 struct ContentView: View {
     @State private var viewModel = PracticeViewModel()
     @State private var selectedSidebar: SidebarItem? = .practice

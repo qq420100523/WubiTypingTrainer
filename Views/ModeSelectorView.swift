@@ -1,6 +1,7 @@
 import SwiftUI
 
 /// 练习模式选择器 — 显示所有可用模式的按钮行
+@MainActor
 struct ModeSelectorView: View {
     @Bindable var viewModel: PracticeViewModel
     @State private var showModeConfirmation = false
