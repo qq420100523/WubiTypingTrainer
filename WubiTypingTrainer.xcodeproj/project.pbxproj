@@ -11,7 +11,6 @@
 		18C9FCEE76B340F58108CB88 /* KeyboardLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525532FC07B647F7868700DB /* KeyboardLayout.swift */; };
 		1B6EA5C5D0C14D1896BF4F05 /* ArticleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD0E2FA86BE94FCD894701AF /* ArticleData.swift */; };
 		27244A0EAB2E4CC6B3548DE8 /* TypingStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB26DC4A79244CEE83241707 /* TypingStats.swift */; };
-		4028F90FAEAA4C179C3F09FB /* PhraseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4B3AAF0322E41E08FA8C524 /* PhraseData.swift */; };
 		4BC33BA27DED415FBE7F6BFB /* MistakeTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DEE6CEEB1644FDEB0F81BE9 /* MistakeTracker.swift */; };
 		4BE147B7BCB142CD85DC0715 /* ArticleListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A35932497A48D593C7E788 /* ArticleListView.swift */; };
 		67E7355215594FAD8C0AA905 /* PracticeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310DEC32BD8248298EEFD2A9 /* PracticeViewModel.swift */; };
@@ -86,7 +85,6 @@
 		C3A35932497A48D593C7E788 /* ArticleListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ArticleListView.swift; path = Views/ArticleListView.swift; sourceTree = SOURCE_ROOT; };
 		C870B11DD97F4ACFA9EC5CC7 /* WubiDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WubiDictionary.swift; path = Models/WubiDictionary.swift; sourceTree = SOURCE_ROOT; };
 		DABC1ECA8B0D49D7B9347BDF /* 黑体字根.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "黑体字根.ttf"; path = "Resources/黑体字根.ttf"; sourceTree = SOURCE_ROOT; };
-		E4B3AAF0322E41E08FA8C524 /* PhraseData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PhraseData.swift; path = Models/PhraseData.swift; sourceTree = SOURCE_ROOT; };
 		EB26DC4A79244CEE83241707 /* TypingStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TypingStats.swift; path = Models/TypingStats.swift; sourceTree = SOURCE_ROOT; };
 		EEE5426F2A1E4B84923BC763 /* ZhihuDailyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ZhihuDailyService.swift; path = Services/ZhihuDailyService.swift; sourceTree = SOURCE_ROOT; };
 		F5B18371C2D64B87B19E1482 /* ZhihuModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ZhihuModels.swift; path = Models/ZhihuModels.swift; sourceTree = SOURCE_ROOT; };
@@ -135,7 +133,6 @@
 				38084FA3671B4D43AFE4D797 /* CumulativeStats.swift */,
 				525532FC07B647F7868700DB /* KeyboardLayout.swift */,
 				8DEE6CEEB1644FDEB0F81BE9 /* MistakeTracker.swift */,
-				E4B3AAF0322E41E08FA8C524 /* PhraseData.swift */,
 				B78B047D6F6F42ECA280B5D5 /* PracticeSession.swift */,
 				FC823472EB7B4A43965279FF /* RadicalFontManager.swift */,
 				EB26DC4A79244CEE83241707 /* TypingStats.swift */,
@@ -349,7 +346,6 @@
 				BF19BBBB6B3041BAA9293023 /* CumulativeStats.swift in Sources */,
 				18C9FCEE76B340F58108CB88 /* KeyboardLayout.swift in Sources */,
 				4BC33BA27DED415FBE7F6BFB /* MistakeTracker.swift in Sources */,
-				4028F90FAEAA4C179C3F09FB /* PhraseData.swift in Sources */,
 				6D23C01428CC4FCBAADB8880 /* PracticeSession.swift in Sources */,
 				A6A64D1BC4474578B38DF0C5 /* RadicalFontManager.swift in Sources */,
 				27244A0EAB2E4CC6B3548DE8 /* TypingStats.swift in Sources */,

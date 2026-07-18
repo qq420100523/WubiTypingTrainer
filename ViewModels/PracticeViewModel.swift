@@ -147,20 +147,22 @@ extension PracticeViewModel {
             if !chars.isEmpty { showNextChar() }
 
         case .zone1, .zone2, .zone3, .zone4, .zone5:
-            let zoneNum: Int
+            let firstLetters: String
             switch mode {
-            case .zone1: zoneNum = 1
-            case .zone2: zoneNum = 2
-            case .zone3: zoneNum = 3
-            case .zone4: zoneNum = 4
-            case .zone5: zoneNum = 5
-            default: zoneNum = 1
+            case .zone1: firstLetters = "gfdsa"
+            case .zone2: firstLetters = "hjklm"
+            case .zone3: firstLetters = "trewq"
+            case .zone4: firstLetters = "yuiop"
+            case .zone5: firstLetters = "nbvcx"
+            default: firstLetters = ""
             }
-            let zoneChars = KeyboardLayout.zoneChars[zoneNum] ?? []
-            let available = zoneChars.filter { wubiDict.code(for: $0.first!) != nil }
-            session.charPool = available.shuffled()
+            let chars = filteredChars().filter { ch in
+                guard let first = ch.first, let code = wubiDict.code(for: first) else { return false }
+                return firstLetters.contains(code.prefix(1).lowercased())
+            }
+            session.charPool = chars.shuffled()
             session.poolIndex = 0
-            if !available.isEmpty { showNextChar() }
+            if !chars.isEmpty { showNextChar() }
 
         case .common0_500, .common500_1000, .common1000_15000:
             let fileName: String
