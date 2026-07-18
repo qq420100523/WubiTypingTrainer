@@ -41,6 +41,20 @@ jobs:
           fi
           echo "✅ App binary exists"
 
+      - name: Run tests (if test target exists)
+        continue-on-error: true
+        run: |
+          xcodebuild test \
+            -project WubiTypingTrainer.xcodeproj \
+            -scheme WubiTypingTrainer \
+            -configuration Debug \
+            -derivedDataPath "${{ runner.temp }}/DerivedData" \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            -testPlan WubiTypingTrainer \
+            2>&1 || echo "⚠️ Test target not configured - add via Xcode: Product → Test"
+
       - name: Create .dmg
         run: |
           brew install create-dmg

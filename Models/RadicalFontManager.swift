@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreText
+import OSLog
 
 /// 管理黑体字根字体注册，用于候选词窗中显示五笔拆字字根（如 〈氵工〉）
 /// 字体来源：https://github.com/mrshiqiqi/rime-wubi
@@ -14,6 +15,8 @@ import CoreText
 class RadicalFontManager {
     static let shared = RadicalFontManager()
     static let fontName = "黑体字根"
+
+    private let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "WubiTypingTrainer", category: "RadicalFontManager")
 
     private var fontAvailable = false
 
@@ -26,24 +29,23 @@ class RadicalFontManager {
         let fontURL = Bundle.main.url(forResource: Self.fontName, withExtension: "ttf")
             ?? Bundle.main.url(forResource: Self.fontName, withExtension: "ttf", subdirectory: "font")
         guard let fontURL else {
-            NSLog("[RadicalFontManager] Font file not found in bundle")
+            logger.error("Font file not found in bundle")
             return
         }
 
         let registered = CTFontManagerRegisterFontsForURL(fontURL as CFURL, .process, nil)
         if registered {
             fontAvailable = true
-            NSLog("[RadicalFontManager] Font registered: \(Self.fontName)")
+            logger.notice("Font registered: \(Self.fontName)")
             return
         }
 
-        // 进程内重复注册会失败，确认字体是否已可用
         let font = CTFontCreateWithName(Self.fontName as CFString, 12, nil)
         fontAvailable = (CTFontCopyFamilyName(font) as String) == Self.fontName
         if fontAvailable {
-            NSLog("[RadicalFontManager] Font already available: \(Self.fontName)")
+            logger.info("Font already available: \(Self.fontName)")
         } else {
-            NSLog("[RadicalFontManager] Font registration failed")
+            logger.error("Font registration failed")
         }
     }
 

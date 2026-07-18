@@ -1,4 +1,5 @@
 import Foundation
+import OSLog
 
 /// 单个字的完整信息
 struct CharDetail {
@@ -22,6 +23,8 @@ final class WubiDictionary {
 
     static let shared = WubiDictionary()
 
+    private let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "WubiTypingTrainer", category: "WubiDictionary")
+
     private init() {}
 
     /// 从内嵌资源加载词库
@@ -30,7 +33,7 @@ final class WubiDictionary {
     func loadBuiltin() -> Bool {
         guard !isLoaded else { return true }
         guard let url = Bundle.main.url(forResource: "wubi86_dict", withExtension: "txt") else {
-            print("⚠️ 词库文件未找到")
+            logger.error("词库文件未找到")
             return false
         }
         return load(from: url)
@@ -92,10 +95,10 @@ final class WubiDictionary {
             self.dict = newDict
             self.details = newDetails
             self.isLoaded = true
-            print("✅ 词库加载完成: \(newDict.count) 个条目")
+            logger.notice("词库加载完成: \(newDict.count) 个条目")
             return true
         } catch {
-            print("⚠️ 词库加载失败: \(error.localizedDescription)")
+            logger.error("词库加载失败: \(error.localizedDescription)")
             return false
         }
     }

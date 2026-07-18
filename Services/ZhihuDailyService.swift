@@ -1,8 +1,11 @@
 import Foundation
+import OSLog
 
 /// 知乎日报文章抓取服务
 actor ZhihuDailyService {
     static let shared = ZhihuDailyService()
+
+    private let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "WubiTypingTrainer", category: "ZhihuDailyService")
 
     private let session: URLSession
     private let baseURL = "https://news-at.zhihu.com/api/4"
@@ -77,7 +80,7 @@ actor ZhihuDailyService {
             let decoded = try JSONDecoder().decode(ZhihuLatestResponse.self, from: data)
             return decoded.stories
         } catch {
-            print("ZhihuDailyService: 获取列表失败 - \(error.localizedDescription)")
+            logger.error("获取列表失败 - \(error.localizedDescription)")
             return nil
         }
     }
@@ -106,7 +109,7 @@ actor ZhihuDailyService {
                 updatedAt: Date()
             )
         } catch {
-            print("ZhihuDailyService: 获取详情失败 [\(story.title)] - \(error.localizedDescription)")
+            logger.error("获取详情失败 [\(story.title)] - \(error.localizedDescription)")
             return nil
         }
     }

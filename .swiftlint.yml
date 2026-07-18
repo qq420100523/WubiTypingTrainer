@@ -1,0 +1,39 @@
+disabled_rules:
+  - trailing_comma
+  - nesting
+  - line_length
+  - type_body_length
+  - file_length
+  - function_body_length
+
+opt_in_rules:
+  - empty_string
+  - force_unwrapping
+  - private_action
+  - private_outlet
+  - unused_import
+
+analyzer_rules:
+  - unused_import
+  - unused_declaration
+
+included:
+  - App
+  - Models
+  - Services
+  - ViewModels
+  - Views
+
+excluded:
+  - .build
+  - DerivedData
+
+identifier_name:
+  excluded:
+    - id
+    - ok
+    - to
+    - in
+    - at
+    - of
+    - by

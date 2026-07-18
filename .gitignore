@@ -27,3 +27,8 @@ gen_*.py
 # reasonix
 .reasonix/
 .reasonix/*
+
+# Tests
+.xctest
+.xctestplan
+Tests/.build

@@ -22,19 +22,33 @@
 		9F59AC85671D4CFD98BD539D /* RootTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE8A54C502D45F88C65C41C /* RootTableView.swift */; };
 		A2C9A1F033714683A7C206C9 /* 黑体字根.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DABC1ECA8B0D49D7B9347BDF /* 黑体字根.ttf */; };
 		A6A64D1BC4474578B38DF0C5 /* RadicalFontManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC823472EB7B4A43965279FF /* RadicalFontManager.swift */; };
+		AA0CF3B51ED8496AA1A9EE3C /* ZhihuDailyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE5426F2A1E4B84923BC763 /* ZhihuDailyService.swift */; };
 		AA8313C5F694462AB0F3112F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 290042A3743E4124AEEB507C /* ContentView.swift */; };
 		AAE7B9439BEC4E788E77EC22 /* ScrollableTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A241C7406EE4898838A2502 /* ScrollableTextView.swift */; };
 		AB55274F41234A649200A3CE /* RulesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FB21925BFF47BCB71864E8 /* RulesView.swift */; };
 		B222C513F33E42D1984ECE34 /* WubiTypingTrainerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F5446DA82684A57837D33BE /* WubiTypingTrainerApp.swift */; };
 		BF19BBBB6B3041BAA9293023 /* CumulativeStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38084FA3671B4D43AFE4D797 /* CumulativeStats.swift */; };
+		D490CC3A8E2843CCB16F9872 /* ZhihuModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B18371C2D64B87B19E1482 /* ZhihuModels.swift */; };
 		DBA709F9B5A342CE862AC5E4 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EE737503FE4070B2763896 /* SettingsView.swift */; };
 		E3DA6FACDA8148E2BF53644C /* JianmaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56568FEB1C944DAC862C42EF /* JianmaView.swift */; };
 		E7CF11E790834FBD86D6731B /* PracticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD3F5321FF7F48D7B6E667A7 /* PracticeView.swift */; };
 		F391BB6A07674FC6A2543A65 /* WubiDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = C870B11DD97F4ACFA9EC5CC7 /* WubiDictionary.swift */; };
-		AA0CF3B51ED8496AA1A9EE3C /* ZhihuDailyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE5426F2A1E4B84923BC763 /* ZhihuDailyService.swift */; };
-		D490CC3A8E2843CCB16F9872 /* ZhihuModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B18371C2D64B87B19E1482 /* ZhihuModels.swift */; };
-
+/* Test target sources */
+		B631D7DD300BC76E00D1AEE8 /* MistakeTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B631D7D9300BC76E00D1AEE4 /* MistakeTrackerTests.swift */; };
+		B631D7DE300BC76E00D1AEE9 /* TypingStatsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B631D7DA300BC76E00D1AEE5 /* TypingStatsTests.swift */; };
+		B631D7DF300BC76E00D1AEEA /* WubiDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B631D7DB300BC76E00D1AEE6 /* WubiDictionaryTests.swift */; };
+		B631D7E0300BC76E00D1AEEB /* WubiTypingTrainerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B631D7DC300BC76E00D1AEE7 /* WubiTypingTrainerTests.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B631D7D3300BC76E00D1AEE2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE90E9C8A5DC450B8D065C25 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 25F03A74E01B4F60983F569B;
+			remoteInfo = WubiTypingTrainer;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		13EE737503FE4070B2763896 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsView.swift; path = Views/SettingsView.swift; sourceTree = SOURCE_ROOT; };
@@ -50,10 +64,15 @@
 		75FB21925BFF47BCB71864E8 /* RulesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RulesView.swift; path = Views/RulesView.swift; sourceTree = SOURCE_ROOT; };
 		8DEE6CEEB1644FDEB0F81BE9 /* MistakeTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MistakeTracker.swift; path = Models/MistakeTracker.swift; sourceTree = SOURCE_ROOT; };
 		9F5446DA82684A57837D33BE /* WubiTypingTrainerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WubiTypingTrainerApp.swift; path = App/WubiTypingTrainerApp.swift; sourceTree = SOURCE_ROOT; };
-		9F8C3C9E15734E9C864A62E2 /* WubiTypingTrainer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "WubiTypingTrainer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9F8C3C9E15734E9C864A62E2 /* WubiTypingTrainer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WubiTypingTrainer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3D37038D5024522AAF4BC6C /* MistakeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MistakeListView.swift; path = Views/MistakeListView.swift; sourceTree = SOURCE_ROOT; };
 		AD0E2FA86BE94FCD894701AF /* ArticleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ArticleData.swift; path = Models/ArticleData.swift; sourceTree = SOURCE_ROOT; };
 		AD3F5321FF7F48D7B6E667A7 /* PracticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PracticeView.swift; path = Views/PracticeView.swift; sourceTree = SOURCE_ROOT; };
+		B631D7CF300BC76E00D1AEE2 /* WubiTypingTrainerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WubiTypingTrainerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B631D7D9300BC76E00D1AEE4 /* MistakeTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MistakeTrackerTests.swift; sourceTree = "<group>"; };
+		B631D7DA300BC76E00D1AEE5 /* TypingStatsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypingStatsTests.swift; sourceTree = "<group>"; };
+		B631D7DB300BC76E00D1AEE6 /* WubiDictionaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WubiDictionaryTests.swift; sourceTree = "<group>"; };
+		B631D7DC300BC76E00D1AEE7 /* WubiTypingTrainerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WubiTypingTrainerTests.swift; sourceTree = "<group>"; };
 		B78B047D6F6F42ECA280B5D5 /* PracticeSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PracticeSession.swift; path = Models/PracticeSession.swift; sourceTree = SOURCE_ROOT; };
 		BA6438CC7AC5431C84B77AE5 /* ModeSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ModeSelectorView.swift; path = Views/ModeSelectorView.swift; sourceTree = SOURCE_ROOT; };
 		BB9395E4B5E64C4D86F9F2DC /* wubi86_dict.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = wubi86_dict.txt; path = Resources/wubi86_dict.txt; sourceTree = SOURCE_ROOT; };
@@ -62,13 +81,19 @@
 		DABC1ECA8B0D49D7B9347BDF /* 黑体字根.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "黑体字根.ttf"; path = "Resources/黑体字根.ttf"; sourceTree = SOURCE_ROOT; };
 		E4B3AAF0322E41E08FA8C524 /* PhraseData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PhraseData.swift; path = Models/PhraseData.swift; sourceTree = SOURCE_ROOT; };
 		EB26DC4A79244CEE83241707 /* TypingStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TypingStats.swift; path = Models/TypingStats.swift; sourceTree = SOURCE_ROOT; };
-		FC823472EB7B4A43965279FF /* RadicalFontManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RadicalFontManager.swift; path = Models/RadicalFontManager.swift; sourceTree = SOURCE_ROOT; };
 		EEE5426F2A1E4B84923BC763 /* ZhihuDailyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ZhihuDailyService.swift; path = Services/ZhihuDailyService.swift; sourceTree = SOURCE_ROOT; };
 		F5B18371C2D64B87B19E1482 /* ZhihuModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ZhihuModels.swift; path = Models/ZhihuModels.swift; sourceTree = SOURCE_ROOT; };
-
+		FC823472EB7B4A43965279FF /* RadicalFontManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RadicalFontManager.swift; path = Models/RadicalFontManager.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		B631D7CC300BC76E00D1AEE2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E42B732AD94E4B1FAF517505 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -117,9 +142,18 @@
 			isa = PBXGroup;
 			children = (
 				C157E21E99A74D21B012E628 /* WubiTypingTrainer */,
+				B631D7D8300BC76E00D1AEE3 /* WubiTypingTrainerTests */,
 				E579255F06C44458AEB76C14 /* Products */,
 				739CC9DF8D6A473897FA327D /* Frameworks */,
 			);
+			sourceTree = "<group>";
+		};
+		5477250F58A912887FD3A8BC /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				EEE5426F2A1E4B84923BC763 /* ZhihuDailyService.swift */,
+			);
+			name = Services;
 			sourceTree = "<group>";
 		};
 		739CC9DF8D6A473897FA327D /* Frameworks */ = {
@@ -147,6 +181,17 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
+		B631D7D8300BC76E00D1AEE3 /* WubiTypingTrainerTests */ = {
+			isa = PBXGroup;
+			children = (
+				B631D7D9300BC76E00D1AEE4 /* MistakeTrackerTests.swift */,
+				B631D7DA300BC76E00D1AEE5 /* TypingStatsTests.swift */,
+				B631D7DB300BC76E00D1AEE6 /* WubiDictionaryTests.swift */,
+				B631D7DC300BC76E00D1AEE7 /* WubiTypingTrainerTests.swift */,
+			);
+			path = WubiTypingTrainerTests;
+			sourceTree = "<group>";
+		};
 		C157E21E99A74D21B012E628 /* WubiTypingTrainer */ = {
 			isa = PBXGroup;
 			children = (
@@ -155,9 +200,10 @@
 				D85D3C26AF714A798802C1AB /* ViewModels */,
 				021034E08C684A78AF085CF4 /* Views */,
 				ADD06BD90B2A48AA82F55025 /* Resources */,
-				3572E019AD704A39A68B9164 /* Info.plist */,				5477250F58A912887FD3A8BC /* Services */,
+				3572E019AD704A39A68B9164 /* Info.plist */,
+				5477250F58A912887FD3A8BC /* Services */,
 			);
-			name = "WubiTypingTrainer";
+			name = WubiTypingTrainer;
 			sourceTree = "<group>";
 		};
 		D85D3C26AF714A798802C1AB /* ViewModels */ = {
@@ -172,19 +218,11 @@
 			isa = PBXGroup;
 			children = (
 				9F8C3C9E15734E9C864A62E2 /* WubiTypingTrainer.app */,
+				B631D7CF300BC76E00D1AEE2 /* WubiTypingTrainerTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		5477250F58A912887FD3A8BC /* Services */ = {
-			isa = PBXGroup;
-			children = (
-				EEE5426F2A1E4B84923BC763 /* ZhihuDailyService.swift */,
-			);
-			name = Services;
-			sourceTree = "<group>";
-		};
-
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -200,10 +238,28 @@
 			);
 			dependencies = (
 			);
-			name = "WubiTypingTrainer";
-			productName = "WubiTypingTrainer";
+			name = WubiTypingTrainer;
+			productName = WubiTypingTrainer;
 			productReference = 9F8C3C9E15734E9C864A62E2 /* WubiTypingTrainer.app */;
 			productType = "com.apple.product-type.application";
+		};
+		B631D7CE300BC76E00D1AEE2 /* WubiTypingTrainerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B631D7D7300BC76E00D1AEE2 /* Build configuration list for PBXNativeTarget "WubiTypingTrainerTests" */;
+			buildPhases = (
+				B631D7CB300BC76E00D1AEE2 /* Sources */,
+				B631D7CC300BC76E00D1AEE2 /* Frameworks */,
+				B631D7CD300BC76E00D1AEE2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B631D7D4300BC76E00D1AEE2 /* PBXTargetDependency */,
+			);
+			name = WubiTypingTrainerTests;
+			productName = WubiTypingTrainerTests;
+			productReference = B631D7CF300BC76E00D1AEE2 /* WubiTypingTrainerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -211,6 +267,11 @@
 		AE90E9C8A5DC450B8D065C25 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				TargetAttributes = {
+					B631D7CE300BC76E00D1AEE2 = {
+						TestTargetID = 25F03A74E01B4F60983F569B;
+					};
+				};
 			};
 			buildConfigurationList = E3D8B4CA02894EADB01B1B96 /* Build configuration list for PBXProject "WubiTypingTrainer" */;
 			compatibilityVersion = "Xcode 14.0";
@@ -227,6 +288,7 @@
 			projectRoot = "";
 			targets = (
 				25F03A74E01B4F60983F569B /* WubiTypingTrainer */,
+				B631D7CE300BC76E00D1AEE2 /* WubiTypingTrainerTests */,
 			);
 		};
 /* End PBXProject section */
@@ -242,9 +304,27 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B631D7CD300BC76E00D1AEE2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		B631D7CB300BC76E00D1AEE2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B631D7DD300BC76E00D1AEE8 /* MistakeTrackerTests.swift in Sources */,
+				B631D7DE300BC76E00D1AEE9 /* TypingStatsTests.swift in Sources */,
+				B631D7DF300BC76E00D1AEEA /* WubiDictionaryTests.swift in Sources */,
+				B631D7E0300BC76E00D1AEEB /* WubiTypingTrainerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E8D28CEC4D5D4BFD92B7A060 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -277,6 +357,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		B631D7D4300BC76E00D1AEE2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 25F03A74E01B4F60983F569B /* WubiTypingTrainer */;
+			targetProxy = B631D7D3300BC76E00D1AEE2 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
 		64E3EF39009B451DA642C0B4 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -307,24 +395,67 @@
 			};
 			name = Debug;
 		};
+		B631D7D5300BC76E00D1AEE2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zwei.WubiTypingTrainerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WubiTypingTrainer.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/WubiTypingTrainer";
+			};
+			name = Debug;
+		};
+		B631D7D6300BC76E00D1AEE2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zwei.WubiTypingTrainerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WubiTypingTrainer.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/WubiTypingTrainer";
+			};
+			name = Release;
+		};
 		C07A71144A9F40A0BF9EFFC7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = "WubiTypingTrainer.entitlements";
+				CODE_SIGN_ENTITLEMENTS = WubiTypingTrainer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Info.plist;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.wubi.typingtrainer;
-				PRODUCT_NAME = "WubiTypingTrainer";
+				PRODUCT_NAME = WubiTypingTrainer;
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "3";
+				TARGETED_DEVICE_FAMILY = 3;
 			};
 			name = Release;
 		};
@@ -332,6 +463,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = (
+					arm64,
+					x86_64,
+				);
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_MODULES = YES;
@@ -342,7 +477,6 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu23;
 				GCC_OPTIMIZATION_LEVEL = s;
-				ARCHS = "arm64 x86_64";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
@@ -354,26 +488,37 @@
 		E5996D821E79438CBACCB46B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = "WubiTypingTrainer.entitlements";
+				CODE_SIGN_ENTITLEMENTS = WubiTypingTrainer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				ENABLE_TESTABILITY = YES;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Info.plist;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.wubi.typingtrainer;
-				PRODUCT_NAME = "WubiTypingTrainer";
+				PRODUCT_NAME = WubiTypingTrainer;
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "3";
+				TARGETED_DEVICE_FAMILY = 3;
 			};
 			name = Debug;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		B631D7D7300BC76E00D1AEE2 /* Build configuration list for PBXNativeTarget "WubiTypingTrainerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B631D7D5300BC76E00D1AEE2 /* Debug */,
+				B631D7D6300BC76E00D1AEE2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		E3D8B4CA02894EADB01B1B96 /* Build configuration list for PBXProject "WubiTypingTrainer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

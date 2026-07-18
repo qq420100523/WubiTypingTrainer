@@ -24,7 +24,7 @@ final class MistakeTracker {
 
     private var saveTask: Task<Void, Never>?
 
-    private init() {
+    init() {
         load()
     }
 
