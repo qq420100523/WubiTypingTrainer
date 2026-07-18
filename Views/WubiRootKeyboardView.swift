@@ -1,15 +1,12 @@
 import SwiftUI
 
-/// 五笔86字根表视图
-struct RootTableView: View {
-    /// 每个按键的格子大小
+struct WubiRootKeyboardView: View {
     private static let keySize: CGFloat = 100
     private static let keySpacing: CGFloat = 6
 
     var body: some View {
         ScrollView([.vertical, .horizontal]) {
             VStack(alignment: .leading, spacing: 12) {
-                // 标题
                 VStack(alignment: .leading, spacing: 4) {
                     Text("五笔86字根表")
                         .font(.title2)
@@ -18,8 +15,7 @@ struct RootTableView: View {
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
-                
-                // 分区图例
+
                 HStack(spacing: 16) {
                     ForEach(1...5, id: \.self) { zone in
                         HStack(spacing: 4) {
@@ -32,8 +28,7 @@ struct RootTableView: View {
                         }
                     }
                 }
-                
-                // 键盘布局（3行）
+
                 VStack(spacing: Self.keySpacing) {
                     ForEach(KeyboardLayout.rows.indices, id: \.self) { rowIndex in
                         HStack(spacing: Self.keySpacing) {
@@ -43,7 +38,7 @@ struct RootTableView: View {
                             if rowIndex == 2 {
                                 Color.clear.frame(width: Self.keySpacing * 5)
                             }
-                            
+
                             ForEach(KeyboardLayout.rows[rowIndex], id: \.self) { key in
                                 if let info = KeyboardLayout.keyboard[key.uppercased()] ?? KeyboardLayout.keyboard[key.lowercased()] {
                                     keyCard(info: info)
@@ -56,10 +51,8 @@ struct RootTableView: View {
         }
     }
 
-    /// 单个键位卡片
     private func keyCard(info: KeyInfo) -> some View {
         VStack(spacing: 2) {
-            // 顶部：名称
             HStack {
                 Text(info.name)
                     .font(.system(size: 14))
@@ -72,7 +65,6 @@ struct RootTableView: View {
                     .lineSpacing(2)
                     .padding(.trailing, 4)
             }
-            // 中间：roots（移除上下 Spacer，让它填满）
             Text(info.roots)
                 .font(Font.custom(RadicalFontManager.fontName, size: 10))
                 .foregroundColor(.secondary)
@@ -80,9 +72,8 @@ struct RootTableView: View {
                 .lineLimit(nil)
                 .multilineTextAlignment(.center)
                 .padding(4)
-                .frame(maxHeight: .infinity)  // 👈 关键：允许垂直拉伸
-            
-            // 底部：key 和 zone
+                .frame(maxHeight: .infinity)
+
             HStack {
                 Text(info.key.uppercased())
                     .font(.system(size: 14, weight: .bold))
@@ -103,7 +94,6 @@ struct RootTableView: View {
         )
     }
 
-    /// 分区颜色
     private func zoneColor(_ zone: Int) -> Color {
         let colors: [Int: Color] = [
             1: .red,
@@ -117,6 +107,6 @@ struct RootTableView: View {
 }
 
 #Preview {
-    RootTableView()
+    WubiRootKeyboardView()
         .frame(width: 650, height: 500)
 }

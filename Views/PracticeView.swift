@@ -241,7 +241,7 @@ private struct ReferenceTextView: View, Equatable {
                     )
             } else {
                 let nsAttr = buildAttrString(targetChars: targetChars, typedChars: typedChars)
-                ScrollableTextView(
+                TextViewer(
                     attributedText: nsAttr,
                     cursorPosition: cursorPos,
                     textVersion: cursorPos,

@@ -111,7 +111,7 @@ struct ContentView: View {
             MistakeListView()
 
         case .roots:
-            RootTableView()
+            WubiRootKeyboardView()
 
         case .jianma:
             JianmaView()
