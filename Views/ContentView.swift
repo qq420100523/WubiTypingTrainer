@@ -70,6 +70,12 @@ struct ContentView: View {
         )) {
             Button("确定", role: .cancel) { viewModel.userAlertMessage = nil }
         }
+        .alert("已完成第 \(viewModel.currentBatchNumber ?? 1) 批", isPresented: $viewModel.showBatchConfirm) {
+            Button("继续") { viewModel.confirmContinueBatch() }
+            Button("取消", role: .cancel) { viewModel.cancelContinueBatch() }
+        } message: {
+            Text("是否继续练习下一批？")
+        }
     }
 
     // MARK: - 侧边栏

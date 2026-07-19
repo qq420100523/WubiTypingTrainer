@@ -37,8 +37,25 @@ final class PracticeViewModel {
     fileprivate let mistakeTracker = MistakeTracker.shared
     fileprivate let cumulativeStats = CumulativeStats.shared
 
+    /// 完整字符池（已打乱），用于分批加载
+    fileprivate var fullCharPool: [String] = []
+    /// 当前批次在 fullCharPool 中的起始游标
+    fileprivate var batchCursor: Int = 0
+    /// 每批加载的字数
+    fileprivate let charBatchSize = 100
+
+    /// 完整词组池（已打乱），用于分批加载
+    fileprivate var fullPhrasePool: [String] = []
+    /// 当前词组批次在 fullPhrasePool 中的起始游标
+    fileprivate var phraseBatchCursor: Int = 0
+
     /// 向用户显示一次性提示消息（ContentView 观察此属性显示 Alert）
     var userAlertMessage: String?
+
+    /// 批次完成时询问是否继续
+    var showBatchConfirm = false
+    /// 标记是否刚跨入新一批（用于在回调中弹出确认）
+    fileprivate var didStartNewBatch = false
 
     // MARK: - 计算属性
 
@@ -99,6 +116,24 @@ final class PracticeViewModel {
         session.isSingleCharMode || session.isPhraseMode
     }
 
+    var currentBatchNumber: Int? {
+        if session.isPhraseMode {
+            guard !fullPhrasePool.isEmpty, phraseBatchCursor > 0 else { return nil }
+            return (phraseBatchCursor + charBatchSize - 1) / charBatchSize
+        }
+        guard !fullCharPool.isEmpty, batchCursor > 0 else { return nil }
+        return (batchCursor + charBatchSize - 1) / charBatchSize
+    }
+
+    var totalBatches: Int {
+        if session.isPhraseMode {
+            guard !fullPhrasePool.isEmpty else { return 1 }
+            return (fullPhrasePool.count + charBatchSize - 1) / charBatchSize
+        }
+        guard !fullCharPool.isEmpty else { return 1 }
+        return (fullCharPool.count + charBatchSize - 1) / charBatchSize
+    }
+
     // MARK: - 初始化
 
     init() {
@@ -134,10 +169,10 @@ extension PracticeViewModel {
 
         switch mode {
         case .random:
-            let chars = Array(filteredChars().shuffled())
-            session.charPool = chars
-            session.poolIndex = 0
-            if !chars.isEmpty { showNextChar() }
+            fullCharPool = filteredChars().shuffled()
+            batchCursor = 0
+            loadNextBatch()
+            if !session.charPool.isEmpty { showNextChar() }
 
         case .zone1, .zone2, .zone3, .zone4, .zone5:
             let firstLetters: String
@@ -149,13 +184,13 @@ extension PracticeViewModel {
             case .zone5: firstLetters = "nbvcx"
             default: firstLetters = ""
             }
-            let chars = filteredChars().filter { ch in
+            fullCharPool = filteredChars().filter { ch in
                 guard let first = ch.first, let code = wubiDict.code(for: first) else { return false }
                 return firstLetters.contains(code.prefix(1).lowercased())
-            }
-            session.charPool = chars.shuffled()
-            session.poolIndex = 0
-            if !chars.isEmpty { showNextChar() }
+            }.shuffled()
+            batchCursor = 0
+            loadNextBatch()
+            if !session.charPool.isEmpty { showNextChar() }
 
         case .common0_500, .common500_1000, .common1000_15000:
             let fileName: String
@@ -165,10 +200,10 @@ extension PracticeViewModel {
             case .common1000_15000: fileName = "FrequentlyCharacters1000-15000"
             default: fileName = "FrequentlyCharacters0-500"
             }
-            let chars = ContentLoader.loadFrequentChars(fileName: fileName).shuffled()
-            session.charPool = chars
-            session.poolIndex = 0
-            if !chars.isEmpty { showNextChar() }
+            fullCharPool = ContentLoader.loadFrequentChars(fileName: fileName).shuffled()
+            batchCursor = 0
+            loadNextBatch()
+            if !session.charPool.isEmpty { showNextChar() }
 
         case .mistakes:
             let mistakeChars = mistakeTracker.sortedMistakes.map { $0.char }
@@ -178,13 +213,15 @@ extension PracticeViewModel {
                 setMode(.random)
                 return
             }
-            session.charPool = mistakeChars.shuffled()
-            session.poolIndex = 0
-            if !mistakeChars.isEmpty { showNextChar() }
+            fullCharPool = mistakeChars.shuffled()
+            batchCursor = 0
+            loadNextBatch()
+            if !session.charPool.isEmpty { showNextChar() }
 
         case .phrase:
-            session.phrasePool = ContentLoader.loadPhrases()
-            session.phraseIndex = 0
+            fullPhrasePool = ContentLoader.loadPhrases().shuffled()
+            phraseBatchCursor = 0
+            loadNextPhraseBatch()
             if !session.phrasePool.isEmpty { showNextPhrase() }
 
         case .article:
@@ -209,11 +246,24 @@ extension PracticeViewModel {
         advanceToNextPendingChar()
     }
 
+    fileprivate func loadNextBatch() {
+        let end = min(batchCursor + charBatchSize, fullCharPool.count)
+        session.charPool = Array(fullCharPool[batchCursor..<end])
+        batchCursor = end
+        session.poolIndex = 0
+    }
+
     fileprivate func showNextChar() {
         guard !session.charPool.isEmpty else { return }
         if session.poolIndex >= session.charPool.count {
-            session.charPool.shuffle()
-            session.poolIndex = 0
+            if batchCursor < fullCharPool.count {
+                loadNextBatch()
+                didStartNewBatch = true
+            } else {
+                fullCharPool.shuffle()
+                batchCursor = 0
+                loadNextBatch()
+            }
         }
 
         let char = session.charPool[session.poolIndex]
@@ -238,11 +288,24 @@ extension PracticeViewModel {
         session.isCompleted = false
     }
 
+    fileprivate func loadNextPhraseBatch() {
+        let end = min(phraseBatchCursor + charBatchSize, fullPhrasePool.count)
+        session.phrasePool = Array(fullPhrasePool[phraseBatchCursor..<end])
+        phraseBatchCursor = end
+        session.phraseIndex = 0
+    }
+
     fileprivate func showNextPhrase() {
         guard !session.phrasePool.isEmpty else { return }
         if session.phraseIndex >= session.phrasePool.count {
-            session.phrasePool.shuffle()
-            session.phraseIndex = 0
+            if phraseBatchCursor < fullPhrasePool.count {
+                loadNextPhraseBatch()
+                didStartNewBatch = true
+            } else {
+                fullPhrasePool.shuffle()
+                phraseBatchCursor = 0
+                loadNextPhraseBatch()
+            }
         }
 
         let phrase = session.phrasePool[session.phraseIndex]
@@ -281,7 +344,7 @@ extension PracticeViewModel {
     }
 
     fileprivate func handleSingleCharInput(oldValue: String) {
-        if session.isPaused || session.isCompleted { return }
+        if session.isPaused || session.isCompleted || session.targetText.isEmpty { return }
 
         if inputText.count < oldValue.count {
             session.backspaceCount += 1
@@ -388,6 +451,7 @@ extension PracticeViewModel {
             } else {
                 self.showNextChar()
             }
+            self.handleBatchEnd()
         }
     }
 
@@ -408,6 +472,7 @@ extension PracticeViewModel {
             } else {
                 self.showNextChar()
             }
+            self.handleBatchEnd()
         }
     }
 }
@@ -476,6 +541,10 @@ extension PracticeViewModel {
         feedbackText = ""
         feedbackType = .none
         isTransitioning = false
+        fullCharPool = []
+        batchCursor = 0
+        fullPhrasePool = []
+        phraseBatchCursor = 0
     }
 
     func restart() {
@@ -490,6 +559,48 @@ extension PracticeViewModel {
         reset()
         session.mode = mode
         setMode(mode)
+    }
+
+    fileprivate func handleBatchEnd() {
+        guard didStartNewBatch else { return }
+        didStartNewBatch = false
+        isTransitioning = true
+        timerService.stop()
+        session.pauseStartTime = Date()
+        showBatchConfirm = true
+    }
+
+    func confirmContinueBatch() {
+        showBatchConfirm = false
+        isTransitioning = false
+        if let pauseStart = session.pauseStartTime {
+            session.pausedDuration += Date().timeIntervalSince(pauseStart)
+            session.pauseStartTime = nil
+        }
+        if session.startTime != nil {
+            startTimer()
+        }
+    }
+
+    func cancelContinueBatch() {
+        showBatchConfirm = false
+        isTransitioning = false
+        session.pauseStartTime = nil
+        session.pausedDuration = 0
+        session.startTime = nil
+        elapsed = 0
+        timerService.stop()
+        session.correctCount = 0
+        session.errorCount = 0
+        session.keystrokeCount = 0
+        session.backspaceCount = 0
+        session.restartCount = 0
+        inputText = ""
+        session.typedText = ""
+        typedTextChars = []
+        feedbackText = ""
+        feedbackType = .none
+        session.isCompleted = false
     }
 
     func restartSingleChar() {

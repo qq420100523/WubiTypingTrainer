@@ -33,14 +33,20 @@ struct PracticeView: View {
     // MARK: - 单字/词组练习视图
 
     private var singleCharProgress: String {
+        let suffix: String
         if viewModel.session.isPhraseMode {
             let total = viewModel.session.phrasePool.count
             let current = min(viewModel.session.phraseIndex, total)
-            return "第 \(current)/\(total) 词"
+            suffix = "第 \(current)/\(total) 词"
+        } else {
+            let total = viewModel.session.charPool.count
+            let current = min(viewModel.session.poolIndex, total)
+            suffix = "第 \(current)/\(total) 字"
         }
-        let total = viewModel.session.charPool.count
-        let current = min(viewModel.session.poolIndex, total)
-        return "第 \(current)/\(total) 字"
+        if let batch = viewModel.currentBatchNumber {
+            return "\(suffix) · 第 \(batch)/\(viewModel.totalBatches) 批"
+        }
+        return suffix
     }
 
     private var singleCharPracticeView: some View {
