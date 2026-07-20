@@ -62,7 +62,7 @@ struct ZhihuArticle: Codable, Identifiable {
 // MARK: - 文章源协议
 
 /// 外部文章源协议
-protocol ArticleSource: Equatable {
+protocol ArticleSource {
     var name: String { get }
     var icon: String { get }
     func fetch() async -> [ArticleEntry]

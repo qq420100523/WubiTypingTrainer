@@ -7,7 +7,7 @@ struct ContentView: View {
     @State private var selectedSidebar: SidebarItem? = .practice
     @State private var showArticlePicker = false
     @State private var showSourcePicker = false
-    @State private var selectedSource: (any ArticleSource)?
+    @State private var selectedSourceName: String?
     @State private var articleListVM = ArticleListViewModel()
     @Environment(\.scenePhase) private var scenePhase
 
@@ -169,7 +169,7 @@ struct ContentView: View {
                         let isBusy = isRefreshing && !hasCached
                         Button(action: {
                             if !isBusy {
-                                selectedSource = source
+                                selectedSourceName = source.name
                                 showSourcePicker = true
                             }
                         }) {
@@ -198,7 +198,8 @@ struct ContentView: View {
                     }
                 }
                 .popover(isPresented: $showSourcePicker) {
-                    if let source = selectedSource {
+                    if let name = selectedSourceName,
+                       let source = articleListVM.sources.first(where: { $0.name == name }) {
                         SourceArticleListView(
                             viewModel: viewModel,
                             articleListVM: articleListVM,
@@ -314,6 +315,7 @@ private struct SidebarStatsView: View {
 
 // MARK: - 外部源文章列表
 
+@MainActor
 private struct SourceArticleListView: View {
     @Bindable var viewModel: PracticeViewModel
     @Bindable var articleListVM: ArticleListViewModel
