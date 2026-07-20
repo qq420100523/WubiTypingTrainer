@@ -21,7 +21,11 @@ actor ZhihuDailyService {
 
     // MARK: - 缓存
 
-    private let cacheKey = "wubi-zhihu-cached-articles"
+    /// 缓存版本号——升级提取逻辑后递增以强制刷新缓存
+    private static let cacheFormatVersion = 6
+    private var cacheKey: String {
+        "wubi-zhihu-cached-articles-v\(Self.cacheFormatVersion)"
+    }
 
     /// 获取最新文章（优先走缓存，下次刷新时自动补充新文章）
     func fetchLatest() async -> [ZhihuArticle] {
@@ -153,9 +157,15 @@ actor ZhihuDailyService {
             text = text.replacingOccurrences(of: entity, with: char)
         }
 
-        // 压缩多余空白行
-        text = text.replacingOccurrences(of: "\\n{3,}", with: "\n\n", options: .regularExpression)
-        text = text.replacingOccurrences(of: "\\s{3,}", with: "  ", options: .regularExpression)
+        // 统一换行符
+        text = text.replacingOccurrences(of: "\r\n", with: "\n")
+        text = text.replacingOccurrences(of: "\r", with: "\n")
+        // 删除完全由空白组成的行，有内容的行保留原样（含首行缩进）
+        text = text.components(separatedBy: "\n")
+            .filter { !$0.trimmingCharacters(in: .whitespaces).isEmpty }
+            .joined(separator: "\n\n")
+        // 压缩行内多余水平空白（3 个以上连续空格缩为 2 个）
+        text = text.replacingOccurrences(of: "[ \\t]{3,}", with: "  ", options: .regularExpression)
 
         return text.trimmingCharacters(in: .whitespacesAndNewlines)
     }
@@ -169,7 +179,8 @@ actor ZhihuDailyService {
 
     /// 读取缓存文章
     static func loadCachedArticles() -> [ZhihuArticle] {
-        guard let data = UserDefaults.standard.data(forKey: "wubi-zhihu-cached-articles"),
+        let key = "wubi-zhihu-cached-articles-v\(Self.cacheFormatVersion)"
+        guard let data = UserDefaults.standard.data(forKey: key),
               let articles = try? JSONDecoder().decode([ZhihuArticle].self, from: data)
         else { return [] }
         return articles

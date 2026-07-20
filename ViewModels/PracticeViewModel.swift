@@ -14,6 +14,8 @@ final class PracticeViewModel {
     var showWubiHints = true
     /// 仅显示 GB2312 字符，过滤 GBK 扩展字符
     var limitToGB2312 = true
+    /// 文章模式下将文章原文中的英文半角符号转为中文全角符号
+    var convertHalfwidthToFullwidth = false
     var inputText: String = "" {
         didSet { handleInputChange(oldValue: oldValue) }
     }
@@ -33,6 +35,8 @@ final class PracticeViewModel {
     fileprivate var elapsed: TimeInterval = 0
     var targetTextChars: [Character] = []
     var typedTextChars: [Character] = []
+    /// 每次加载新文章时递增，用于触发对照文本滚动到顶部
+    var passageVersion = 0
     fileprivate let wubiDict = WubiDictionary.shared
     fileprivate let mistakeTracker = MistakeTracker.shared
     fileprivate let cumulativeStats = CumulativeStats.shared
@@ -232,13 +236,15 @@ extension PracticeViewModel {
 
     func startArticle(_ article: ArticleEntry) {
         reset()
+        passageVersion += 1
+        let text = convertHalfwidthToFullwidth ? halfwidthToFullwidth(article.text) : article.text
         session.mode = .article
         session.passageId = article.id
-        session.targetText = article.text
+        session.targetText = text
         targetTextChars = Array(session.targetText)
 
         var chars: [PassageChar] = []
-        for ch in article.text {
+        for ch in text {
             chars.append(PassageChar(char: ch, code: wubiDict.code(for: ch), status: .pending))
         }
         session.passageChars = chars
@@ -511,14 +517,16 @@ extension PracticeViewModel {
 
     func loadText(_ text: String) {
         reset()
+        passageVersion += 1
         let cleaned = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !cleaned.isEmpty else { return }
         if session.mode != .article {
             session.mode = .article
         }
-        session.targetText = cleaned
+        let converted = convertHalfwidthToFullwidth ? halfwidthToFullwidth(cleaned) : cleaned
+        session.targetText = converted
         targetTextChars = Array(session.targetText)
-        session.passageChars = cleaned.map { PassageChar(char: $0, code: wubiDict.code(for: $0), status: .pending) }
+        session.passageChars = converted.map { PassageChar(char: $0, code: wubiDict.code(for: $0), status: .pending) }
         session.passageIndex = 0
         inputText = ""
     }
@@ -651,6 +659,26 @@ extension PracticeViewModel {
             loadText(string)
         }
     }
+}
+
+/// 将字符串中的英文半角符号转为中文全角符号
+private func halfwidthToFullwidth(_ string: String) -> String {
+    let mapping: [(String, String)] = [
+        (",", "，"), (".", "。"), ("/", "、"),
+        (";", "；"), ("'", "‘"), ("[", "【"), ("]", "】"),
+        ("`", "`"), ("!", "！"), ("@", "@"), ("#", "#"),
+        ("$", "￥"), ("%", "％"), ("^", "……"), ("&", "&"),
+        ("*", "＊"), ("(", "（"), (")", "）"), ("-", "-"),
+        ("_", "——"), ("+", "+"), ("=", "="), ("~", "～"),
+        ("{", "「"), ("\\", "、"), ("|", "｜"), ("}", "」"),
+        (":", "："), ("\"", "“"), ("<", "《"), (">", "》"),
+        ("?", "？"),
+    ]
+    var result = string
+    for (half, full) in mapping {
+        result = result.replacingOccurrences(of: half, with: full)
+    }
+    return result
 }
 
 /// 反馈类型

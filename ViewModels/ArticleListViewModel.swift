@@ -2,15 +2,21 @@ import Foundation
 import Observation
 
 /// 文章列表视图模型
-/// 管理内置文章、用户自定义文章，支持按需从外部源（如知乎日报）获取文章
+/// 管理内置文章、用户自定义文章，支持按需从外部源获取文章
 @MainActor
 @Observable
 final class ArticleListViewModel {
     private(set) var customArticles: [ArticleEntry] = []
-    private(set) var zhihuArticles: [ZhihuArticle] = []
-    var isRefreshingZhihu = false
-    var zhihuError: String?
-    var zhihuSuccessMessage: String?
+    /// 所有外部文章源
+    let sources: [any ArticleSource] = [ZhihuDailySource(), YiYueDuSource(), YanSource(), SongCiSource(), TangShiSource(), ShijingSource(), LunyuSource()]
+    /// 各源的文章列表 [sourceName: [ArticleEntry]]
+    private(set) var sourceArticles: [String: [ArticleEntry]] = [:]
+    /// 各源的刷新状态 [sourceName: Bool]
+    private(set) var isRefreshing: [String: Bool] = [:]
+    /// 各源的错误消息 [sourceName: String?]
+    private(set) var sourceErrors: [String: String?] = [:]
+    /// 各源的成功消息 [sourceName: String?]  
+    private(set) var sourceMessages: [String: String?] = [:]
 
     private let storageKey = "wubi-custom-articles"
 
@@ -51,10 +57,9 @@ final class ArticleListViewModel {
         saveCustomArticles()
     }
 
-    /// 将知乎文章保存为自定义文章
-    func saveZhihuArticle(_ article: ZhihuArticle) {
-        let entry = article.asArticleEntry
-        let savedId = "saved_zhihu_\(article.storyId)"
+    /// 将外部源文章保存为自定义文章
+    func saveSourceArticle(_ entry: ArticleEntry) {
+        let savedId = "saved_\(entry.id)"
         let saved = ArticleEntry(id: savedId, title: entry.title, text: entry.text)
         if !customArticles.contains(where: { $0.id == savedId }) {
             customArticles.append(saved)
@@ -64,29 +69,44 @@ final class ArticleListViewModel {
 
     /// 判断是否为自定义文章
     func isCustom(_ article: ArticleEntry) -> Bool {
-        article.id.hasPrefix("custom_") || article.id.hasPrefix("saved_zhihu_")
+        article.id.hasPrefix("custom_") || article.id.hasPrefix("saved_")
     }
 
-    // MARK: - 知乎日报
+    /// 预查询所有源（仅首次无缓存时）
+    func prefetchAll() {
+        for source in sources where sourceArticles[source.name] == nil {
+            fetch(source: source)
+        }
+    }
 
-    /// 从网络获取知乎日报文章
-    func fetchZhihu() {
-        guard !isRefreshingZhihu else { return }
-        isRefreshingZhihu = true
-        zhihuError = nil
+    // MARK: - 外部源管理
+
+    /// 获取某个源的文章列表
+    func articles(for sourceName: String) -> [ArticleEntry] {
+        sourceArticles[sourceName] ?? []
+    }
+
+    /// 刷新指定外部源
+    func fetch(source: any ArticleSource) {
+        let name = source.name
+        guard !(isRefreshing[name] ?? false) else { return }
+        isRefreshing[name] = true
+        sourceErrors[name] = nil
 
         Task {
-            let articles = await ZhihuDailyService.shared.fetchLatest()
+            let articles = await source.fetch()
             await MainActor.run {
-                zhihuArticles = articles
-                isRefreshingZhihu = false
+                sourceArticles[name] = articles
+                isRefreshing[name] = false
                 if articles.isEmpty {
-                    zhihuError = "获取失败，请检查网络连接后重试"
+                    sourceErrors[name] = "获取失败，请检查网络连接后重试"
+                    sourceMessages[name] = nil
                 } else {
-                    zhihuSuccessMessage = "已获取 \(articles.count) 篇知乎文章"
+                    sourceMessages[name] = "已获取 \(articles.count) 篇\(name)文章"
+                    sourceErrors[name] = nil
                     Task {
                         try? await Task.sleep(for: .seconds(2))
-                        zhihuSuccessMessage = nil
+                        sourceMessages[name] = nil
                     }
                 }
             }

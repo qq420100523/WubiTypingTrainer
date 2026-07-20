@@ -107,6 +107,15 @@ struct SettingsView: View {
                         .foregroundColor(.secondary)
                 }
             }
+
+            Toggle(isOn: $viewModel.convertHalfwidthToFullwidth) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("英文符号转中文全角")
+                    Text("文章模式下将半角 ,.!?:;() 等转为全角符号")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
+            }
         }
     }
 

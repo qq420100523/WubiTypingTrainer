@@ -6,6 +6,9 @@ struct ContentView: View {
     @State private var viewModel = PracticeViewModel()
     @State private var selectedSidebar: SidebarItem? = .practice
     @State private var showArticlePicker = false
+    @State private var showSourcePicker = false
+    @State private var selectedSource: (any ArticleSource)?
+    @State private var articleListVM = ArticleListViewModel()
     @Environment(\.scenePhase) private var scenePhase
 
     /// 侧边栏导航项
@@ -155,8 +158,56 @@ struct ContentView: View {
                     Label("选择文章", systemImage: "book")
                 }
                 .popover(isPresented: $showArticlePicker) {
-                    ArticleListView(viewModel: viewModel)
+                    ArticleListView(viewModel: viewModel, articleListVM: articleListVM)
                 }
+
+                Menu {
+                    ForEach(articleListVM.sources, id: \.name) { source in
+                        let name = source.name
+                        let isRefreshing = articleListVM.isRefreshing[name] ?? false
+                        let hasCached = !(articleListVM.articles(for: name).isEmpty)
+                        let isBusy = isRefreshing && !hasCached
+                        Button(action: {
+                            if !isBusy {
+                                selectedSource = source
+                                showSourcePicker = true
+                            }
+                        }) {
+                            HStack(spacing: 6) {
+                                if isBusy {
+                                    Image(systemName: "arrow.triangle.2.circlepath")
+                                        .foregroundColor(.secondary)
+                                    Text(source.name)
+                                        .foregroundColor(.secondary)
+                                } else {
+                                    Label(source.name, systemImage: source.icon)
+                                    if isRefreshing {
+                                        Image(systemName: "arrow.triangle.2.circlepath")
+                                            .foregroundColor(.secondary)
+                                            .font(.caption)
+                                    }
+                                }
+                            }
+                        }
+                        .disabled(isBusy)
+                    }
+                } label: {
+                    HStack(spacing: 4) {
+                        Image(systemName: "globe")
+                        Text("在线文章")
+                    }
+                }
+                .popover(isPresented: $showSourcePicker) {
+                    if let source = selectedSource {
+                        SourceArticleListView(
+                            viewModel: viewModel,
+                            articleListVM: articleListVM,
+                            source: source,
+                            isPresented: $showSourcePicker
+                        )
+                    }
+                }
+                .help("从在线源获取文章")
             }
 
             Spacer()
@@ -261,7 +312,102 @@ private struct SidebarStatsView: View {
     }
 }
 
+// MARK: - 外部源文章列表
+
+private struct SourceArticleListView: View {
+    @Bindable var viewModel: PracticeViewModel
+    @Bindable var articleListVM: ArticleListViewModel
+    let source: any ArticleSource
+    @Binding var isPresented: Bool
+
+    private var articles: [ArticleEntry] { articleListVM.articles(for: source.name) }
+    private var isRefreshing: Bool { articleListVM.isRefreshing[source.name] ?? false }
+    private var errorMsg: String? { articleListVM.sourceErrors[source.name] ?? nil }
+    private var successMsg: String? { articleListVM.sourceMessages[source.name] ?? nil }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Image(systemName: source.icon)
+                    .foregroundColor(.green)
+                Text(source.name)
+                    .font(.headline)
+                Spacer()
+                if isRefreshing {
+                    ProgressView()
+                        .controlSize(.small)
+                } else {
+                    Button("刷新") { articleListVM.fetch(source: source) }
+                        .font(.caption)
+                }
+            }
+
+            if let msg = successMsg {
+                Text(msg)
+                    .font(.caption)
+                    .foregroundColor(.green)
+            } else if let error = errorMsg {
+                HStack {
+                    Text(error)
+                        .font(.caption)
+                        .foregroundColor(.orange)
+                    Button("重试") { articleListVM.fetch(source: source) }
+                        .font(.caption)
+                }
+            }
+
+            if articles.isEmpty {
+                VStack(spacing: 8) {
+                    Image(systemName: "text.alignleft")
+                        .font(.largeTitle)
+                        .foregroundColor(.secondary)
+                    Text("暂无文章，点击「刷新」获取")
+                        .foregroundColor(.secondary)
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else {
+                List {
+                    ForEach(articles) { article in
+                        Button(action: {
+                            viewModel.startArticle(article)
+                            isPresented = false
+                        }) {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(article.title)
+                                    .font(.body)
+                                    .foregroundColor(.primary)
+                                    .lineLimit(2)
+                                HStack(spacing: 8) {
+                                    Text("\(article.text.count) 字")
+                                        .font(.caption)
+                                        .foregroundColor(.secondary)
+                                    Button(action: { articleListVM.saveSourceArticle(article) }) {
+                                        Image(systemName: "square.and.arrow.down")
+                                            .font(.caption)
+                                            .foregroundColor(.accentColor)
+                                    }
+                                    .buttonStyle(.plain)
+                                    .help("保存到自定义文章")
+                                }
+                            }
+                        }
+                        .buttonStyle(.plain)
+                        .padding(.vertical, 2)
+                    }
+                }
+                .listStyle(.sidebar)
+            }
+        }
+        .padding()
+        .frame(width: 400, height: 420)
+        .onAppear {
+            if articles.isEmpty {
+                articleListVM.fetch(source: source)
+            }
+        }
+    }
+}
+
 #Preview {
     ContentView()
-        .frame(width: 800, height: 600)
 }

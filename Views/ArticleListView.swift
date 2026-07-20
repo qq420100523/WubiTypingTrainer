@@ -1,13 +1,13 @@
 import SwiftUI
 
 /// 文章选择列表视图
-/// 支持选择内置文章、导入自定义文章，以及按需从外部来源获取文章
+/// 支持选择内置文章、导入自定义文章
 @MainActor
 struct ArticleListView: View {
     @Bindable var viewModel: PracticeViewModel
+    var articleListVM: ArticleListViewModel
     @Environment(\.dismiss) private var dismiss
 
-    @State private var articleListVM = ArticleListViewModel()
     @State private var showImportSheet = false
     @State private var importTitle = ""
     @State private var importText = ""
@@ -28,7 +28,7 @@ struct ArticleListView: View {
 
             Divider()
 
-            if articleListVM.allArticles.isEmpty, articleListVM.zhihuArticles.isEmpty {
+            if articleListVM.allArticles.isEmpty {
                 VStack(spacing: 8) {
                     Image(systemName: "text.alignleft")
                         .font(.largeTitle)
@@ -45,55 +45,10 @@ struct ArticleListView: View {
                         }
                     }
 
-                    if !articleListVM.zhihuArticles.isEmpty {
-                        Section("知乎日报") {
-                            ForEach(articleListVM.zhihuArticles) { article in
-                                Button(action: {
-                                    viewModel.startArticle(article.asArticleEntry)
-                                    dismiss()
-                                }) {
-                                    VStack(alignment: .leading, spacing: 2) {
-                                        Text(article.title)
-                                            .font(.body)
-                                            .foregroundColor(.primary)
-                                            .lineLimit(2)
-                                        HStack(spacing: 8) {
-                                            Text("知乎日报")
-                                                .font(.caption2)
-                                                .padding(.horizontal, 4)
-                                                .padding(.vertical, 1)
-                                                .background(Color.green.opacity(0.1))
-                                                .foregroundColor(.green)
-                                                .clipShape(RoundedRectangle(cornerRadius: 3))
-                                            Text(article.bodyText.count > 0 ? "\(article.bodyText.count) 字" : "")
-                                                .font(.caption)
-                                                .foregroundColor(.secondary)
-                                            Text(article.updatedAt, style: .date)
-                                                .font(.caption)
-                                                .foregroundColor(.secondary)
-                                            Button(action: { articleListVM.saveZhihuArticle(article) }) {
-                                                Image(systemName: "square.and.arrow.down")
-                                                    .font(.caption)
-                                                    .foregroundColor(.accentColor)
-                                                    .offset(y: -2)
-                                            }
-                                            .buttonStyle(.plain)
-                                            .help("保存到自定义文章")
-                                        }
-                                    }
-                                }
-                                .buttonStyle(.plain)
-                                .padding(.vertical, 2)
-                            }
-                        }
-                    }
+
                 }
                 .listStyle(.sidebar)
             }
-
-            Divider()
-
-            externalSources
         }
         .padding()
         .frame(width: 440, height: 480)
@@ -102,57 +57,6 @@ struct ArticleListView: View {
         }
         .onAppear {
             articleListVM.loadCustomArticles()
-        }
-    }
-
-    /// 外部文章来源按钮区（可在此追加新来源）
-    private var externalSources: some View {
-        VStack(spacing: 8) {
-            Button(action: { articleListVM.fetchZhihu() }) {
-                HStack {
-                    Image(systemName: "newspaper")
-                        .foregroundColor(.green)
-                    Text("从知乎日报获取")
-                        .foregroundColor(.primary)
-                    Spacer()
-                    if articleListVM.isRefreshingZhihu {
-                        ProgressView()
-                            .controlSize(.small)
-                    } else {
-                        Image(systemName: "chevron.right")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
-                }
-                .padding(10)
-                .background(Color(nsColor: .controlBackgroundColor))
-                .clipShape(RoundedRectangle(cornerRadius: 8))
-            }
-            .buttonStyle(.plain)
-            .disabled(articleListVM.isRefreshingZhihu)
-
-            if let msg = articleListVM.zhihuSuccessMessage {
-                HStack {
-                    Image(systemName: "checkmark.circle.fill")
-                        .foregroundColor(.green)
-                        .font(.caption)
-                    Text(msg)
-                        .font(.caption)
-                        .foregroundColor(.green)
-                }
-                .transition(.opacity)
-            } else if let error = articleListVM.zhihuError {
-                HStack {
-                    Image(systemName: "exclamationmark.triangle")
-                        .foregroundColor(.orange)
-                        .font(.caption)
-                    Text(error)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                    Button("重试") { articleListVM.fetchZhihu() }
-                        .font(.caption)
-                }
-            }
         }
     }
 
@@ -252,5 +156,5 @@ struct ArticleListView: View {
 }
 
 #Preview {
-    ArticleListView(viewModel: PracticeViewModel())
+    ArticleListView(viewModel: PracticeViewModel(), articleListVM: ArticleListViewModel())
 }

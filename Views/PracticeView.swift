@@ -157,7 +157,8 @@ struct PracticeView: View {
                 cursorPos: viewModel.session.typedText.count,
                 previousCursorPos: previousCursorPos,
                 fontSize: CGFloat(textFontSize),
-                appearanceVersion: colorScheme == .dark ? 1 : 0
+                appearanceVersion: colorScheme == .dark ? 1 : 0,
+                passageVersion: viewModel.passageVersion
             )
             .onChange(of: viewModel.session.typedText.count) { _, newPos in
                 previousCursorPos = newPos
@@ -230,13 +231,15 @@ private struct ReferenceTextView: View, Equatable {
     let previousCursorPos: Int
     let fontSize: CGFloat
     let appearanceVersion: Int
+    let passageVersion: Int
 
     static func == (lhs: ReferenceTextView, rhs: ReferenceTextView) -> Bool {
         lhs.targetChars == rhs.targetChars &&
         lhs.typedChars == rhs.typedChars &&
         lhs.cursorPos == rhs.cursorPos &&
         lhs.fontSize == rhs.fontSize &&
-        lhs.appearanceVersion == rhs.appearanceVersion
+        lhs.appearanceVersion == rhs.appearanceVersion &&
+        lhs.passageVersion == rhs.passageVersion
     }
 
     private var changedIndex: Int {
@@ -266,7 +269,7 @@ private struct ReferenceTextView: View, Equatable {
                     attributedText: nsAttr,
                     text: .constant(""),
                     cursorPosition: cursorPos,
-                    textVersion: cursorPos,
+                    textVersion: passageVersion * 65536 + cursorPos,
                     appearanceVersion: appearanceVersion,
                     fontSize: fontSize,
                     changedIndex: changedIndex
