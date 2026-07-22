@@ -419,7 +419,7 @@ extension PracticeViewModel {
                 if i < targetTextChars.count {
                     let ch = typedTextChars[i]
                     let targetChar = targetTextChars[i]
-                    if ch != targetChar {
+                    if ch != targetChar, targetChar >= "\u{4E00}", targetChar <= "\u{9FFF}" {
                         mistakeTracker.recordMistake(for: targetChar, code: wubiDict.code(for: targetChar))
                     }
                 }
@@ -469,7 +469,7 @@ extension PracticeViewModel {
         feedbackText = "错误！正确文字：\(currentDisplayChar)"
         feedbackType = .wrong
 
-        if let char = currentDisplayChar.first {
+        if let char = currentDisplayChar.first, char >= "\u{4E00}", char <= "\u{9FFF}" {
             mistakeTracker.recordMistake(for: char, code: currentCharCode)
         }
 
