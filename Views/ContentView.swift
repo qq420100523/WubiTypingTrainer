@@ -102,6 +102,12 @@ struct ContentView: View {
             SidebarStatsView(session: viewModel.session, stats: viewModel.stats)
         }
         .listStyle(.sidebar)
+        .overlay {
+            Color.accentColor
+                .opacity(0.12)
+                .allowsHitTesting(false)
+                .ignoresSafeArea()
+        }
     }
 
     // MARK: - 主内容区
